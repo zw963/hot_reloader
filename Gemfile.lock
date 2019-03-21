@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    hot_reloader (0.1.0)
+    hot_reloader (0.2.0)
       listen (~> 3.0)
       zeitwerk (~> 1.4)
 
