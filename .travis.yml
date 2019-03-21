@@ -1,4 +1,5 @@
 language: ruby
+script: rake
 install: bundle install
 rvm:
   - 2.2
