@@ -36,14 +36,41 @@ else
 end
 ```
 
+Then create app.rb in ROOT directory.
+
+```rb
+# app.rb
+
+class App < Roda
+  articles = []
+
+  route do |r|
+    r.post "articles" do
+    articles << r.params["content"]
+    "Count: #{articles.count}"
+    end
+  end
+end
+```
+
+Directory structure is like this:
+
+├── app.rb
+├── config.ru
+├── Gemfile
+└── Gemfile.lock
+
+Change code in app.rb, **all constant get removed from memory, and app.rb evaluated again**!
+
 ## Support
 
-  * MRI 2.2+
-  * Rubinius 2.2+
+  * MRI 2.4.4+
+  * JRuby
 
 ## Dependency
 
-No known limit.
+zeitwerk https://github.com/fxn/zeitwerk
+listen https://github.com/guard/listen
 
 ## Contributing
 
