@@ -28,12 +28,10 @@ require 'hot_reloader'
 
 if ENV['RACK_ENV'] == 'production'
   HotReloader.eager_load(__dir__, 'another/root/path')
-  run ->(env) {
-    App.call(env)
-  }
+  run App
 else
   HotReloader.will_listen([__dir__, 'another/root/path'])
-  run App
+  run ->(env) { App.call(env) }
 end
 ```
 
