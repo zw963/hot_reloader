@@ -30,7 +30,7 @@ class HotReloader
 
     def setup_loader(folders, logger:, ignore:)
       raise 'ignore: only accept an array of glob patterns string or Pathname objects.' unless ignore.is_a? Array
-      raise 'you must set the root folders from which you want to load files.' if folders&.empty?
+      raise 'you must set the root folders from which you want to load watched files.' if folders&.empty?
 
       folders.each {|folder| loader.push_dir(folder) }
       loader.logger = logger

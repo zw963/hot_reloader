@@ -6,6 +6,6 @@ class HotReloaderTest < Minitest::Test
   end
 
   def test_eager_load_all
-    HotReloader.eager_load_all
+    HotReloader.eager_load(File.expand_path("../", __dir__))
   end
 end
