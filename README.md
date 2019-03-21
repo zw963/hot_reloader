@@ -1,6 +1,6 @@
 # HotReloader [![Build Status](https://travis-ci.org/zw963/hot_reloader.svg?branch=master)](https://travis-ci.org/zw963/hot_reloader) [![Gem Version](https://badge.fury.io/rb/hot_reloader.svg)](http://badge.fury.io/rb/hot_reloader)
 
-A dead simple code hot reloader wrapper around [zeitwerk](https://github.com/fxn/zeitwerk) and [listen](https://github.com/guard/listen).
+A dead simple ruby code hot reloader wrapper around [zeitwerk](https://github.com/fxn/zeitwerk) and [listen](https://github.com/guard/listen).
 
 See README for those gems for usage.
 
@@ -20,9 +20,25 @@ Add to your Gemfile
 
 Following is a example for use hot_reloader with [Roda](https://github.com/jeremyevans/roda):
 
+```rb
+# config.ru
+
+require 'roda'
+require 'hot_reloader'
+
+if ENV['RACK_ENV'] == 'production'
+  HotReloader.will_listen(__dir__)
+  run ->(env) {
+    App.call(env)
+  }
+else
+  run App
+end
+```
+
 ## Support
 
-  * MRI 2.2.2+
+  * MRI 2.2+
   * Rubinius 2.2+
 
 ## Dependency
