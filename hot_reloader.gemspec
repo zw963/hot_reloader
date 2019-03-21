@@ -7,8 +7,8 @@ Gem::Specification.new do |s|
   s.required_ruby_version       = '>= 2.4.4'
   s.authors                     = ['Billy.Zheng(zw963)']
   s.email                       = ['vil963@gmail.com']
-  s.summary                     = 'Just a dead simple wrapper around zeitwerk and listen.'
-  s.description                 = ''
+  s.summary                     = 'A dead simple ruby code hot reloader wrap around zeitwerk and listen.'
+  s.description                 = 'A dead simple ruby code hot reloader wrap around zeitwerk and listen.'
   s.homepage                    = 'http://github.com/zw963/hot_reloader'
   s.license                     = 'MIT'
   s.require_paths               = ['lib']

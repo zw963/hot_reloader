@@ -1,6 +1,6 @@
 # HotReloader [![Build Status](https://travis-ci.org/zw963/hot_reloader.svg?branch=master)](https://travis-ci.org/zw963/hot_reloader) [![Gem Version](https://badge.fury.io/rb/hot_reloader.svg)](http://badge.fury.io/rb/hot_reloader)
 
-A dead simple ruby code hot reloader wrapper around [zeitwerk](https://github.com/fxn/zeitwerk) and [listen](https://github.com/guard/listen).
+A dead simple ruby code hot reloader wrap around [zeitwerk](https://github.com/fxn/zeitwerk) and [listen](https://github.com/guard/listen).
 
 See README for those gems for usage.
 
