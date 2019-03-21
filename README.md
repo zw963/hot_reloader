@@ -55,10 +55,12 @@ end
 
 Directory structure is like this:
 
+```
 ├── app.rb
 ├── config.ru
 ├── Gemfile
 └── Gemfile.lock
+```
 
 Change code in app.rb, **all constant get removed from memory, and app.rb evaluated again**!
 
