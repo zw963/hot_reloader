@@ -1,4 +1,4 @@
-module HotReloader
+class HotReloader
   VERSION = [0, 2, 0]
 
   class << VERSION

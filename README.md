@@ -27,16 +27,15 @@ require 'roda'
 require 'hot_reloader'
 
 if ENV['RACK_ENV'] == 'production'
-  HotReloader.will_listen(__dir__)
+  HotReloader.eager_load(__dir__, 'another/root/path')
   run ->(env) {
     App.call(env)
   }
 else
+  HotReloader.will_listen([__dir__, 'another/root/path'])
   run App
 end
 ```
-
-Then create app.rb in ROOT directory.
 
 ```rb
 # app.rb
