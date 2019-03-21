@@ -1,5 +1,4 @@
 language: ruby
-script: bundle exec rspec
 install: bundle install
 rvm:
   - 2.2
