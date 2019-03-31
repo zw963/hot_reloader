@@ -13,7 +13,7 @@ class HotReloader
     def will_listen(*folders, logger: method(:puts), ignore: [])
       folders = folders.flatten
       setup_loader(folders, logger: logger, ignore: ignore)
-      Listen.to(*folders) { loader.reload }.start
+      Listen.to(*folders, wait_for_delay: 1) { loader.reload }.start
     end
 
     def eager_load(*folders, logger: method(:puts))
