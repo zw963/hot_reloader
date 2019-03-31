@@ -1,9 +1,5 @@
-class HotReloader
-  VERSION = [0, 3, 1]
+# frozen_string_literal: true
 
-  class << VERSION
-    def to_s
-      join('.')
-    end
-  end
+class HotReloader
+  VERSION = '0.3.2'
 end

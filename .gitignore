@@ -1,3 +1,6 @@
 .ruby-version
 *.gem
 Gemfile.lock
+.yardopts
+.yardoc/
+rdoc/
