@@ -16,6 +16,6 @@ Gem::Specification.new do |s|
   s.files                      -= Dir['images/*.png']
   s.executables                 = `git ls-files -- bin/*`.split("\n").map {|f| File.basename(f) }
 
-  s.add_runtime_dependency 'zeitwerk', '~>1.4'
+  s.add_runtime_dependency 'zeitwerk', '~>2.3'
   s.add_runtime_dependency 'listen', '~>3.0'
 end
