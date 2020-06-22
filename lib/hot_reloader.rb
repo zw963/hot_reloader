@@ -1,17 +1,9 @@
 # frozen_string_literal: true
 
-require 'singleton'
 require 'zeitwerk'
 require 'listen'
 
 class HotReloader
-  include Singleton
-
-  # @private
-  def initialize
-    @loader = Zeitwerk::Loader.new
-  end
-
   class << self
     # Listen on folders for file change, and reload changed rb file if necessary.
     # Should be used for development mode only.
@@ -21,6 +13,7 @@ class HotReloader
     # @param [Array<String>] ignore Glob patterns or Pathname object which should be excluded.
     # @return nil
     def will_listen(*folders, logger: method(:puts), ignore: [])
+      loader = Zeitwerk::Loader.new
       folders = folders.flatten
 
       raise 'you must set the root folders from which you want to load watched files.' if folders&.empty?
@@ -43,6 +36,7 @@ class HotReloader
     # @param [#call] logger logger or any object should response call.
     # @return nil
     def eager_load(*folders, logger: method(:puts))
+      loader = Zeitwerk::Loader.new
       folders = folders.flatten
 
       raise 'you must set the root folders from which you want to load watched files.' if folders&.empty?
@@ -52,12 +46,6 @@ class HotReloader
 
       loader.setup
       loader.eager_load
-    end
-
-    private
-
-    def loader
-      instance.instance_variable_get(:@loader)
     end
   end
 end
