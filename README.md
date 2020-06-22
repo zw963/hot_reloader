@@ -27,10 +27,10 @@ require 'roda'
 require 'hot_reloader'
 
 if ENV['RACK_ENV'] == 'production'
-  HotReloader.eager_load(__dir__, 'another/root/path')
+  HotReloader.eager_load('path1', 'path2')
   run App
 else
-  HotReloader.will_listen([__dir__, 'another/root/path'])
+  HotReloader.will_listen('path1',  'path2'')
   run ->(env) { App.call(env) }
 end
 ```
