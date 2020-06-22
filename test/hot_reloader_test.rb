@@ -2,10 +2,12 @@ require 'hot_reloader'
 
 class HotReloaderTest < Minitest::Test
   def test_will_listen
-    HotReloader.will_listen(File.expand_path("../", __dir__))
+    file = File.expand_path("./test_a", __dir__)
+    HotReloader.will_listen(file)
   end
 
   def test_eager_load_all
-    HotReloader.eager_load(File.expand_path("../", __dir__))
+    file = File.expand_path("./test_b", __dir__)
+    HotReloader.eager_load(file)
   end
 end
