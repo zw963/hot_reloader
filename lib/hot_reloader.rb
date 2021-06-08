@@ -10,10 +10,10 @@ class HotReloader
     #
     # @param [*String, Array<String>] folders Folders which should be monitor, can be multi-args or array.
     #   or only one Zeitwerk::Loader object can be provided.
-    # @param [#call] logger logger or any object should response call.
+    # @param [#call] logger logger or any object should response call, e.g. method(:puts)
     # @param [Array<String>] ignore Glob patterns or Pathname object which should be excluded.
     # @return nil
-    def will_listen(*folders, logger: method(:puts), ignore: [])
+    def will_listen(*folders, logger: Logger.new(IO::NULL), ignore: [])
       folders = folders.flatten
 
       if folders.first.is_a? Zeitwerk::Loader
@@ -42,9 +42,9 @@ class HotReloader
     #
     # @param [*String, Array<String>] folders folders which should be autoload, can be multi-args or array.
     #   or only one Zeitwerk::Loader object can be provided.
-    # @param [#call] logger logger or any object should response call.
+    # @param [#call] logger logger or any object should response call, e.g. method(:puts)
     # @return nil
-    def eager_load(*folders, logger: method(:puts))
+    def eager_load(*folders, logger: Logger.new(IO::NULL))
       folders = folders.flatten
 
       if folders.first.is_a? Zeitwerk::Loader
