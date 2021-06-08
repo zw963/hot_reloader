@@ -64,6 +64,7 @@ Or use more simple form (if you don't need setup Zeitwerk loader youself)
 
 require 'bundler'
 Bundler.require(:default, ENV.fetch('RACK_ENV', "development"))
+require_relative 'application'
 
 paths = ["#{__dir__}/../app", "#{__dir__}/../app/models"]
 
@@ -72,8 +73,6 @@ if ENV['RACK_ENV'] == 'production'
 else
   HotReloader.will_listen(*paths)
 end
-
-require_relative 'application'
 ```
 
 Write whatever application initialize code which need add into application.rb
