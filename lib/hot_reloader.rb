@@ -9,17 +9,25 @@ class HotReloader
     # Should be used for development mode only.
     #
     # @param [*String, Array<String>] folders Folders which should be monitor, can be multi-args or array.
+    #   or only one Zeitwerk::Loader object can be provided.
     # @param [#call] logger logger or any object should response call.
     # @param [Array<String>] ignore Glob patterns or Pathname object which should be excluded.
     # @return nil
     def will_listen(*folders, logger: method(:puts), ignore: [])
-      loader = Zeitwerk::Loader.new
       folders = folders.flatten
 
-      raise 'you must set the root folders from which you want to load watched files.' if folders&.empty?
-      raise 'ignore: only accept an array of glob patterns string or Pathname objects.' unless ignore.is_a? Array
+      if folders.first.is_a? Zeitwerk::Loader
+        loader = folders.first
+        folders = loader.root_dirs.keys
+      else
+        loader = Zeitwerk::Loader.new
 
-      folders.each {|folder| loader.push_dir(folder) }
+        raise 'you must set the root folders from which you want to load watched files.' if folders&.empty?
+        raise 'ignore: only accept an array of glob patterns string or Pathname objects.' unless ignore.is_a? Array
+
+        folders.each {|folder| loader.push_dir(folder) }
+      end
+
       loader.enable_reloading if loader.respond_to? :enable_reloading
       loader.logger = logger
 
@@ -33,15 +41,22 @@ class HotReloader
     # More rule see https://github.com/fxn/zeitwerk
     #
     # @param [*String, Array<String>] folders folders which should be autoload, can be multi-args or array.
+    #   or only one Zeitwerk::Loader object can be provided.
     # @param [#call] logger logger or any object should response call.
     # @return nil
     def eager_load(*folders, logger: method(:puts))
-      loader = Zeitwerk::Loader.new
       folders = folders.flatten
 
-      raise 'you must set the root folders from which you want to load watched files.' if folders&.empty?
+      if folders.first.is_a? Zeitwerk::Loader
+        loader = folders.first
+        folders = loader.root_dirs.keys
+      else
+        loader = Zeitwerk::Loader.new
+        raise 'you must set the root folders from which you want to load watched files.' if folders&.empty?
 
-      folders.each {|folder| loader.push_dir(folder) }
+        folders.each {|folder| loader.push_dir(folder) }
+      end
+
       loader.logger = logger
 
       loader.setup
