@@ -1,3 +1,8 @@
+== 0.6.0 2021-06-08
+
+* Change default logger from `method(:puts)` to a null logger.
+* Fix README.md.
+
 == 0.5.0 2021-06-08
 
 * Permit `HotReloader.will_listen` and `HotReloader.eager_load` accept a exists Zeitwerk::Loader as arg.
