@@ -1,0 +1,4 @@
+== 0.5.0 2021-06-08
+
+* Permit `HotReloader.will_listen` and `HotReloader.eager_load` accept a exists Zeitwerk::Loader as arg.
+* Refine Document for the process work with Roda.
