@@ -20,31 +20,85 @@ Add to your Gemfile
 
 Following is a example for use hot_reloader with [Roda](https://github.com/jeremyevans/roda):
 
+`config.ru` which used to start rack based web server with `command rackup -o 0.0.0.0 -p 9393`
+
 ```rb
 # config.ru
 
-require 'roda'
-require 'hot_reloader'
+require_relative './config/environment'
 
 if ENV['RACK_ENV'] == 'production'
-  HotReloader.eager_load('path1', 'path2')
-  run App
+  run App.freeze.app
 else
-  HotReloader.will_listen('path1',  'path2'')
   run ->(env) { App.call(env) }
 end
 ```
 
+Add loader initialize code into `config/environment.rb`
+
+
 ```rb
-# app.rb
+# config/environment.rb
+
+require 'bundler'
+Bundler.require(:default, ENV.fetch('RACK_ENV', "development"))
+require_relative 'application'
+
+loader = Zeitwerk::Loader.new
+loader.push_dir("#{__dir__}/../app")
+loader.push_dir("#{__dir__}/../app/models")
+loader.inflector.inflect "ar" => "AR"
+
+if ENV['RACK_ENV'] == 'production'
+  HotReloader.eager_load(loader)
+else
+  HotReloader.will_listen(loader)
+end
+```
+
+Or use more simple form (if you don't need setup Zeitwerk loader youself)
+
+
+```rb
+# config/environment.rb
+
+require 'bundler'
+Bundler.require(:default, ENV.fetch('RACK_ENV', "development"))
+
+paths = ["#{__dir__}/../app", "#{__dir__}/../app/models"]
+
+if ENV['RACK_ENV'] == 'production'
+  HotReloader.eager_load(*paths)
+else
+  HotReloader.will_listen(*paths)
+end
+
+require_relative 'application'
+```
+
+Write whatever application initialize code which need add into application.rb
+
+```rb
+# config/application.rb
+
+DB = Sequel.connect(ENV.fetch("DATABASE_URL"), timeout: 10000)
+```
+
+Add roda code into app/app.rb
+
+```rb
+# app/app.rb
 
 class App < Roda
-  articles = []
-
+  articles = ['programming ruby', 'programming rust']
   route do |r|
     r.post "articles" do
-    articles << r.params["content"]
-    "Count: #{articles.count}"
+      articles << r.params["content"]
+      "Count: #{articles.count}"
+    end
+	
+	r.get "articles" do
+      articles.join(', ')
     end
   end
 end
@@ -53,7 +107,9 @@ end
 Directory structure is like this:
 
 ```
-├── app.rb
+├── app/app.rb
+├── config/environment.rb
+├── config/application.rb
 ├── config.ru
 ├── Gemfile
 └── Gemfile.lock
