@@ -56,7 +56,7 @@ else
 end
 ```
 
-Or use more simple form (if you don't need setup Zeitwerk loader youself)
+Or your can pass paths into hot_reloader directly (if you don't need setup Zeitwerk youself)
 
 
 ```rb
@@ -80,7 +80,9 @@ Write whatever application initialize code which need add into application.rb
 ```rb
 # config/application.rb
 
-DB = Sequel.connect(ENV.fetch("DATABASE_URL"), timeout: 10000)
+DB = Sequel.connect(ENV.fetch("#{ENV.fetch('RACK_ENV', "development").upcase}_DATABASE_URL"), timeout: 10000)
+Sequel::Model.plugin :timestamps
+Sequel.extension :symbol_aref
 ```
 
 Add roda code into app/app.rb
