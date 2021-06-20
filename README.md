@@ -116,7 +116,9 @@ Directory structure is like this:
 └── Gemfile.lock
 ```
 
-Change code in app.rb, **all constant get removed from memory, and app.rb evaluated again**!
+After change code in app.rb, **all constant get removed from memory, and app.rb evaluated again**!
+
+For a more rich WIP sample project, please check my another project [marketbet_crawler](https://github.com/zw963/marketbet_crawler).
 
 ## Support
 
