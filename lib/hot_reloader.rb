@@ -30,10 +30,10 @@ class HotReloader
 
       loader.enable_reloading if loader.respond_to? :enable_reloading
       loader.logger = logger
-
       loader.ignore(ignore) unless ignore.empty?
-
       loader.setup
+
+      Listen.logger = logger
       Listen.to(*folders, wait_for_delay: 1) { loader.reload }.start
     end
 
