@@ -34,7 +34,7 @@ class HotReloader
       loader.setup
 
       Listen.logger = logger
-      Listen.to(*folders, wait_for_delay: 1) { loader.reload }.start
+      Listen.to(*folders, wait_for_delay: 1, ignore: /\.#.*/) { loader.reload }.start
     end
 
     # Enable autoload ruby file based on default Zeitwerk rule.
