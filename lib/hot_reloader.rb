@@ -17,8 +17,11 @@ class HotReloader
       folders = folders.flatten
 
       if folders.first.is_a? Zeitwerk::Loader
-        loader = folders.first
+        loader, *reloadable_folders = folders
         folders = loader.root_dirs.keys
+        # `folders' will add to zeitwerk root directories and listened.
+        # `reloadable_folder' listened only, it can be reload dynamically.
+        # but not constant lookup use name convention.
       else
         loader = Zeitwerk::Loader.new
 
@@ -26,6 +29,7 @@ class HotReloader
         raise 'ignore: only accept an array of glob patterns string or Pathname objects.' unless ignore.is_a? Array
 
         folders.each {|folder| loader.push_dir(folder) }
+        reloadable_folders = []
       end
 
       loader.enable_reloading if loader.respond_to? :enable_reloading
@@ -34,7 +38,8 @@ class HotReloader
       loader.setup
 
       Listen.logger = logger
-      Listen.to(*folders, wait_for_delay: 1, ignore: /\.#.*/) { loader.reload }.start
+
+      Listen.to(*(folders + reloadable_folders), wait_for_delay: 1, ignore: /\.#.*/) { loader.reload }.start
     end
 
     # Enable autoload ruby file based on default Zeitwerk rule.
