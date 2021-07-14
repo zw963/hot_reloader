@@ -10,7 +10,7 @@ class HotReloader
     #
     # @param [*String, Array<String>] folders Folders which should be monitor, can be multi-args or array.
     #   or only one Zeitwerk::Loader object can be provided.
-    # @param [#call] logger logger or any object should response call, e.g. method(:puts)
+    # @param [#call] logger logger or any object should response call, e.g. method(:puts), $stdout, $stderr.
     # @param [Array<String>] ignore Glob patterns or Pathname object which should be excluded.
     # @return nil
     def will_listen(*folders, logger: Logger.new(IO::NULL), ignore: [])
@@ -25,7 +25,7 @@ class HotReloader
       else
         loader = Zeitwerk::Loader.new
 
-        raise 'you must set the root folders from which you want to load watched files.' if folders&.empty?
+        raise 'you must set the root directories from which you want to load watched files.' if folders&.empty?
         raise 'ignore: only accept an array of glob patterns string or Pathname objects.' unless ignore.is_a? Array
 
         folders.each {|folder| loader.push_dir(folder) }
@@ -47,9 +47,9 @@ class HotReloader
     #
     # @param [*String, Array<String>] folders folders which should be autoload, can be multi-args or array.
     #   or only one Zeitwerk::Loader object can be provided.
-    # @param [#call] logger logger or any object should response call, e.g. method(:puts)
+    # @param [#call] logger logger or any object should response call, e.g. method(:puts), $stdout, $stderr.
     # @return nil
-    def eager_load(*folders, logger: Logger.new(IO::NULL))
+    def eager_load(*folders, logger: Logger.new(IO::NULL), ignore: [])
       folders = folders.flatten
 
       if folders.first.is_a? Zeitwerk::Loader
@@ -57,12 +57,15 @@ class HotReloader
         folders = loader.root_dirs.keys
       else
         loader = Zeitwerk::Loader.new
-        raise 'you must set the root folders from which you want to load watched files.' if folders&.empty?
+
+        raise 'you must set the root directories from which you want to load watched files.' if folders&.empty?
+        raise 'ignore: only accept an array of glob patterns string or Pathname objects.' unless ignore.is_a? Array
 
         folders.each {|folder| loader.push_dir(folder) }
       end
 
       loader.logger = logger
+      loader.ignore(ignore) unless ignore.empty?
 
       loader.setup
       loader.eager_load
