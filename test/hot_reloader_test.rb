@@ -1,25 +1,32 @@
 require 'hot_reloader'
 
-class HotReloaderTest < Minitest::Test
-  def test_will_listen
-    file = File.expand_path("./test_a", __dir__)
-    HotReloader.will_listen(file)
+describe "HotReloader" do
+  it "should support paths as args" do
+    HotReloader.will_listen("#{__dir__}/test_a/a")
+    HotReloader.eager_load("#{__dir__}/test_a/b")
+    assert_raises(Zeitwerk::NameError) do
+      HotReloader.eager_load("#{__dir__}/test_a/c")
+    end
   end
 
-  def test_eager_load_all
-    file = File.expand_path("./test_b", __dir__)
-    HotReloader.eager_load(file)
+  it "should support path array as args" do
+    HotReloader.will_listen(["#{__dir__}/test_b/a"])
+    HotReloader.eager_load(["#{__dir__}/test_b/b"])
   end
 
-  def test_will_listen_zeitwerk_loader
+  it "should support autoload and reload and logger when use will_listen" do
     loader = Zeitwerk::Loader.new
-    loader.push_dir("#{__dir__}/test_c")
-    HotReloader.will_listen(loader)
+    loader.push_dir("#{__dir__}/test_d/a")
+    assert_output(nil, /autoload set for TestDA/) do
+      HotReloader.will_listen(loader, "#{__dir__}/test_d/b", logger: Logger.new($stderr))
+    end
   end
 
-  def test_will_eager_load_zeitwerk_loader
+  it "should support eagerloading" do
     loader = Zeitwerk::Loader.new
-    loader.push_dir("#{__dir__}/test_d")
-    HotReloader.eager_load(loader)
+    loader.push_dir("#{__dir__}/test_e/a")
+    assert_output(nil, /autoload set for TestEA/) do
+      HotReloader.eager_load(loader, logger: Logger.new($stderr))
+    end
   end
 end
