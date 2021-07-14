@@ -27,15 +27,35 @@ Following is a example for use hot_reloader with [Roda](https://github.com/jerem
 
 require_relative './config/environment'
 
-if ENV['RACK_ENV'] == 'production'
-  run App.freeze.app
-else
+if ENV['RACK_ENV'] == 'development'
   run ->(env) { App.call(env) }
+else
+  run App.freeze.app
 end
 ```
 
 Add loader initialize code into `config/environment.rb`
 
+For simple use case, you just need pass paths to `HotReloader.eager_load` or `HotReloader.will_listen`.
+
+```rb
+# config/environment.rb
+
+require 'bundler'
+Bundler.require(:default, ENV.fetch('RACK_ENV', "development"))
+require_relative 'application'
+
+paths = ["#{__dir__}/../app", "#{__dir__}/../app/models"]
+
+if ENV['RACK_ENV'] == 'development'
+  HotReloader.will_listen(*paths)
+else
+  HotReloader.eager_load(*paths)
+end
+```
+
+For more advanced case(e.g. you need setup zeitwerk loader instance yourself), you
+can pass this instance to HotReloader methods too.
 
 ```rb
 # config/environment.rb
@@ -47,31 +67,61 @@ require_relative 'application'
 loader = Zeitwerk::Loader.new
 loader.push_dir("#{__dir__}/../app")
 loader.push_dir("#{__dir__}/../app/models")
-loader.inflector.inflect "ar" => "AR"
 
-if ENV['RACK_ENV'] == 'production'
-  HotReloader.eager_load(loader)
-else
+if ENV['RACK_ENV'] == 'development'
   HotReloader.will_listen(loader)
+else
+  HotReloader.eager_load(loader)
 end
 ```
 
-Or your can pass paths into hot_reloader directly (if you don't need setup Zeitwerk youself)
+When you change root directories files(app/*.rb or app/models/*.rb for above case), 
+all monitored files will be reload.
 
+it is possible to trigger reload from any `.rb` files, even this file not follow constant 
+lookup name convention, and this file folder not add to root directories use `push_dir` method.
+
+Following is a example.
 
 ```rb
-# config/environment.rb
+# app/app.rb
 
-require 'bundler'
-Bundler.require(:default, ENV.fetch('RACK_ENV', "development"))
-require_relative 'application'
+class App < Roda
+  plugin :hash_routes
+  
+  Dir["routes/**/*.rb"].each do |route_file|
+    load route_file
+  end
+end
+```
 
-paths = ["#{__dir__}/../app", "#{__dir__}/../app/models"]
+```rb
+# routes/blog.rb
 
-if ENV['RACK_ENV'] == 'production'
-  HotReloader.eager_load(*paths)
+class App
+  hash_routes.on "blog" do |r|
+    "blog"
+  end
+end
+```
+
+`routes/blog.rb` is not follow constant lookup name convention, so, `routes/` folder can't be
+add to root directories use push_dir method, but you can always trigger with `loader.reload`
+if `routes/blog.rb` was changed, then when `app/app.rb` reloaded, it will load the
+newest code in `routes/blog.rb` from the Dir each loop.
+
+For achieve this, you only need pass listened folders to will_listen method as secondary arg.
+
+```
+loader = Zeitwerk::Loader.new
+loader.push_dir("#{__dir__}/../app")
+
+listened_folders = ["#{__dir__}/../routes"]
+
+if ENV['RACK_ENV'] == 'development'
+  HotReloader.will_listen(loader, listened_folders)
 else
-  HotReloader.will_listen(*paths)
+  HotReloader.eager_load(loader)
 end
 ```
 
