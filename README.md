@@ -20,21 +20,7 @@ Add to your Gemfile
 
 Following is a example for use hot_reloader with [Roda](https://github.com/jeremyevans/roda):
 
-`config.ru` which used to start rack based web server with `command rackup -o 0.0.0.0 -p 9393`
-
-```rb
-# config.ru
-
-require_relative './config/environment'
-
-if ENV['RACK_ENV'] == 'development'
-  run ->(env) { App.call(env) }
-else
-  run App.freeze.app
-end
-```
-
-Add loader initialize code into `config/environment.rb`
+### Add loader initialize code into `config/environment.rb`
 
 For simple use case, you just need pass paths to `HotReloader.eager_load` or `HotReloader.will_listen`.
 
@@ -125,7 +111,23 @@ else
 end
 ```
 
-Write whatever application initialize code which need add into application.rb
+### Add other app files
+
+`config.ru` which used to start rack based web server with `command rackup -o 0.0.0.0 -p 9393`
+
+```rb
+# config.ru
+
+require_relative './config/environment'
+
+if ENV['RACK_ENV'] == 'development'
+  run ->(env) { App.call(env) }
+else
+  run App.freeze.app
+end
+```
+
+Write whatever application needed initialize code into config/application.rb
 
 ```rb
 # config/application.rb
