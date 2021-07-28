@@ -179,8 +179,9 @@ For a more rich WIP sample project, please check my another project [marketbet_c
 
 ## Dependency
 
-zeitwerk https://github.com/fxn/zeitwerk
-listen https://github.com/guard/listen
+[zeitwerk](https://github.com/fxn/zeitwerk) https://github.com/fxn/zeitwerk
+
+[listen](https://github.com/guard/listen) https://github.com/guard/listen
 
 ## Contributing
 
