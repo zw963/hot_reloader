@@ -1,3 +1,12 @@
+== 0.7.1 2021-08-06
+
+* Added: add listened_folder feature, more detail, check README.md
+* Changed: Make listen wait_for_delay use default 0.1 second(1 second before).
+* Added: Add `wait_for_delay` and `listen_ignore` option to will_listen.
+* Added: add ignore options to #eager_load
+* Fixed: Listen use same logger as Zentwerk.
+* Added: Listen will ignore emacs temp files.
+
 == 0.6.0 2021-06-08
 
 * Change default logger from `method(:puts)` to a null logger.

@@ -10,10 +10,12 @@ class HotReloader
     #
     # @param [*String, Array<String>] folders Folders which should be monitor, can be multi-args or array.
     #   or only one Zeitwerk::Loader object can be provided.
-    # @param [#call] logger logger or any object should response call, e.g. method(:puts), $stdout, $stderr.
-    # @param [Array<String>] ignore Glob patterns or Pathname object which should be excluded.
+    # @param [#call] logger logger object, e.g. Logger.new($stdout).
+    # @param [Array<String>, Array<Pathname>] ignore File names, Glob patterns or Pathname object which should be excluded for zeitwerk.
+    # @param [Integer] wait_for_delay Set the delay (in seconds) before call loader.reload when changes exist.
+    # @param [Array<Regexp>] listen_ignore The regexp pattern which don't want listen on.
     # @return nil
-    def will_listen(*folders, logger: Logger.new(IO::NULL), ignore: [])
+    def will_listen(*folders, logger: Logger.new(IO::NULL), ignore: [], wait_for_delay: nil, listen_ignore: [])
       folders = folders.flatten
 
       if folders.first.is_a? Zeitwerk::Loader
@@ -39,7 +41,11 @@ class HotReloader
 
       Listen.logger = logger
 
-      Listen.to(*(folders + listened_folders), wait_for_delay: 1, ignore: /\.#.*/) { loader.reload }.start
+      listen_options = {ignore: [/\A\.?#/]}
+      listen_options.merge!({wait_for_delay: wait_for_delay}) if wait_for_delay
+      listen_options[:ignore].concat listen_ignore if listen_ignore
+
+      Listen.to(*(folders + listened_folders), listen_options) { loader.reload }.start
     end
 
     # Enable autoload ruby file based on default Zeitwerk rule.
@@ -47,7 +53,8 @@ class HotReloader
     #
     # @param [*String, Array<String>] folders folders which should be autoload, can be multi-args or array.
     #   or only one Zeitwerk::Loader object can be provided.
-    # @param [#call] logger logger or any object should response call, e.g. method(:puts), $stdout, $stderr.
+    # @param [#call] logger logger object, e.g. Logger.new($stdout)
+    # @param [Array<String>, Array<Pathname>] ignore File names, Glob patterns or Pathname object which should be excluded for zeitwerk.
     # @return nil
     def eager_load(*folders, logger: Logger.new(IO::NULL), ignore: [])
       folders = folders.flatten

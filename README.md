@@ -98,7 +98,7 @@ newest code in `routes/blog.rb` from the Dir each loop.
 
 For achieve this, you only need pass listened folders to will_listen method as secondary arg.
 
-```
+```rb
 loader = Zeitwerk::Loader.new
 loader.push_dir("#{__dir__}/../app")
 
