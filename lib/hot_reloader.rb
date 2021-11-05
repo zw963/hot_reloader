@@ -14,6 +14,7 @@ class HotReloader
     # @param [Array<String>, Array<Pathname>] ignore File names, Glob patterns or Pathname object which should be excluded for zeitwerk.
     # @param [Integer] wait_for_delay Set the delay (in seconds) before call loader.reload when changes exist.
     # @param [Array<Regexp>] listen_ignore The regexp pattern which don't want listen on.
+    # @yield [] ruby code will be run after Zeitwerk loader get reloaded.
     # @return nil
     def will_listen(*folders, logger: Logger.new(IO::NULL), ignore: [], wait_for_delay: nil, listen_ignore: [])
       folders = folders.flatten
@@ -45,7 +46,10 @@ class HotReloader
       listen_options.merge!({wait_for_delay: wait_for_delay}) if wait_for_delay
       listen_options[:ignore].concat listen_ignore if listen_ignore
 
-      Listen.to(*(folders + listened_folders), listen_options) { loader.reload }.start
+      Listen.to(*(folders + listened_folders), listen_options) do
+        loader.reload
+        yield
+      end.start
     end
 
     # Enable autoload ruby file based on default Zeitwerk rule.
