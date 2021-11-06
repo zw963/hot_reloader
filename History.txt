@@ -1,3 +1,7 @@
+== 0.8.0 2021-11-06
+
+* Added: will_listen support block for hook run ruby code after code reloaded.
+
 == 0.7.1 2021-08-06
 
 * Added: add listened_folder feature, more detail, check README.md
