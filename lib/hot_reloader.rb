@@ -48,7 +48,7 @@ class HotReloader
 
       Listen.to(*(folders + listened_folders), listen_options) do
         loader.reload
-        yield
+        yield if block_given?
       end.start
     end
 
