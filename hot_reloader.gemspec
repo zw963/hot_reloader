@@ -18,4 +18,5 @@ Gem::Specification.new do |s|
 
   s.add_runtime_dependency 'zeitwerk', '~>2.3'
   s.add_runtime_dependency 'listen', '~>3.0'
+  s.add_development_dependency 'ritual', '~>0.5'
 end

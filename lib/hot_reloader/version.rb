@@ -1,5 +1,13 @@
 # frozen_string_literal: true
 
-class HotReloader
-  VERSION = '0.8.1'
+module HotReloader
+  VERSION = [0, 8, 1]
+
+  class << VERSION
+    include Comparable
+
+    def to_s
+      join('.')
+    end
+  end
 end
