@@ -1,4 +1,5 @@
 require 'rake/testtask'
+require 'ritual'
 
 Rake::TestTask.new do |t|
   t.libs = ['lib', 'test']
