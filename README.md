@@ -1,4 +1,4 @@
-# HotReloader [![Build Status](https://travis-ci.com/zw963/hot_reloader.svg?branch=master)](https://travis-ci.com/zw963/hot_reloader) [![Gem Version](https://badge.fury.io/rb/hot_reloader.svg)](http://badge.fury.io/rb/hot_reloader)
+# HotReloader [![CI](https://github.com/zw963/hot_reloader/actions/workflows/ci.yml/badge.svg)](https://github.com/zw963/hot_reloader/actions/workflows/ci.yml) [![Gem Version](https://badge.fury.io/rb/hot_reloader.svg)](http://badge.fury.io/rb/hot_reloader)
 
 A dead simple ruby code hot reloader wrap around [zeitwerk](https://github.com/fxn/zeitwerk) and [listen](https://github.com/guard/listen).
 
@@ -174,7 +174,7 @@ For a more rich WIP sample project, please check my another project [marketbet_c
 
 ## Support
 
-  * MRI 2.4.4+
+  * MRI 2.5+
   * JRuby
 
 ## Dependency
