@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module HotReloader
+class HotReloader
   VERSION = [0, 8, 2]
 
   class << VERSION
