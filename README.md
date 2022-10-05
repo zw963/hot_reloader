@@ -1,4 +1,4 @@
-# HotReloader [![CI](https://github.com/zw963/hot_reloader/actions/workflows/ci.yml/badge.svg)](https://github.com/zw963/hot_reloader/actions/workflows/ci.yml) [![Gem Version](https://badge.fury.io/rb/hot_reloader.svg)](http://badge.fury.io/rb/hot_reloader)
+# HotReloader [![CI](https://github.com/zw963/hot_reloader/actions/workflows/ci.yml/badge.svg)](https://github.com/zw963/hot_reloader/actions/workflows/ci.yml) [![Gem Version](https://badge.fury.io/rb/hot_reloader.svg)](http://badge.fury.io/rb/hot_reloader) ![](https://ruby-gem-downloads-badge.herokuapp.com/hot_reloader?type=total)
 
 A dead simple ruby code hot reloader wrap around [zeitwerk](https://github.com/fxn/zeitwerk) and [listen](https://github.com/guard/listen).
 
