@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class HotReloader
-  VERSION = [0, 8, 2]
+  VERSION = [0, 9, 0]
 
   class << VERSION
     include Comparable
