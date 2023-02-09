@@ -21,7 +21,7 @@ class HotReloader
 
       if folders.first.is_a? Zeitwerk::Loader
         loader, *listened_folders = folders
-        folders = loader.root_dirs.keys
+        folders = loader.__roots.keys
         # `folders' will add to zeitwerk root directories and listened.
         # `reloadable_folder' listened only, it can be reload dynamically.
         # but not constant lookup use name convention.
@@ -65,7 +65,7 @@ class HotReloader
 
       if folders.first.is_a? Zeitwerk::Loader
         loader = folders.first
-        folders = loader.root_dirs.keys
+        folders = loader.__roots.keys
       else
         loader = Zeitwerk::Loader.new
 
